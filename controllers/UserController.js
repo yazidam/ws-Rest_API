@@ -46,13 +46,24 @@ const deleteUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    Object.assign(user, req.body);
-    await user.save();
-    res.send({ data: user });
-  } catch (error) {
-    res.status(404).send({ error: "user not found try again" });
+  const user = await User.findById(req.params.id);
+  console.log("user", user);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.phone = req.body.email || user.phone;
+    if (req.body.password) {
+      user.password = await bcrypt.hash(req.body.password, 10);
+    }
+    const updatedUser = await user.save();
+    res.json({
+      name: updatedUser.name,
+      email: updatedUser.email,
+    });
+    console.log("user found");
+  } else {
+    res.status(404);
+    throw new Error("user dont found");
   }
 };
 
