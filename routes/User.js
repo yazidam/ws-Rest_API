@@ -7,6 +7,7 @@ const {
   updateUser,
   authUser,
 } = require("../controllers/UserController");
+const protect = require("../middlewares/authMiddleware");
 const { userValidator, validate } = require("../middlewares/validators");
 
 const router = express.Router();
@@ -16,7 +17,7 @@ router.get("/test", (req, res) => {
 });
 
 router.post("/add", userValidator, validate, createUser);
-router.get("/all", getUsers);
+router.get("/all", protect, getUsers);
 router.get("/:id", getUserById);
 router.delete("/:id", deleteUser);
 router.patch("/:id", updateUser);
