@@ -7,8 +7,10 @@ app.use(express.json());
 const connectDB = require("./config/connectDB");
 connectDB();
 const routes = require("./routes/User");
+const productRoute = require("./routes/Product");
 
 app.use("/api/user", routes);
+app.use("/api/products", productRoute);
 
 const port = 5500;
 
